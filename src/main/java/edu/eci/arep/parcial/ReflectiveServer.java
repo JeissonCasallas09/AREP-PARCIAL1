@@ -5,11 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
-import java.lang.reflect.*;
-import java.net.HttpURLConnection;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,32 +62,38 @@ public class ReflectiveServer {
     }
 
     public static String getOperation(String path, List<String> params) throws Exception{
+        Class<?> c= Class.forName(params.get(3));
+        String response=null;
         if(params.size()==1){
             if("Class".equals(path)){
-                return String.valueOf(Class.forName(params.get(0)));       
+                return String.valueOf(Class(params));       
             }
         }
         else if(params.size()==2){
-            Class<?> c= ;
-            Method method= c.getMethod(path, path.getClass());
-            Object response= method.invoke(params.get(0), params.get(1));
+            Method method= c.getMethod(path, String.class, String.class);
+            response= (String) method.invoke(params.get(0), params.get(1));
             return response.toString();
         }
 
         else if(params.size()==4){
-            Method method= c.getMethod(path,String.class,St);
-            Object response= method.invoke(params.get(0), params.get(1),params.get(2),params.get(3));
+            Method method= c.getMethod(path,String.class,String.class, Object.class,Object.class);
+            response= (String) method.invoke(params.get(0), params.get(1),params.get(2),params.get(3));
             return response.toString();
         }else if(params.size()==6){
-            Method method= c.getMethod(path, params.);
-            Object response= method.invoke(params.get(0), params.get(1),params.get(2),params.get(3),params.get(4),params.get(5));
+            Method method= c.getMethod(path, String.class,String.class, Object.class,Object.class, Object.class, Object.class);
+            response= (String) method.invoke(params.get(0), params.get(1),params.get(2),params.get(3),params.get(4),params.get(5));
+            return response.toString();
+        }else{
+            throw new IllegalArgumentException("Numero de parametros diferente al aceptado");
         }
-
+        return response;
     }
 
-    public static String GetClass(String className) throws ClassNotFoundException{        
-        return Class.forName(className).toString();
+    public static java.lang.Class<?> Class(List<String> className) throws ClassNotFoundException{        
+        return Class.forName(className.get(0));
     }
+
+
 
 
 
