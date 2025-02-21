@@ -31,6 +31,11 @@ public class HttpServerFachada {
                     break;
                 }
 
+                else if(inputLine.startsWith("GET /cliente")){
+                    command=null;
+                    break;
+                }
+
                 if(!in.ready()){
                     break;
                 }
